@@ -2,7 +2,9 @@ package pl.edu.agh.JakDojadeProlog.controller;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Controller
-public class SimpleController {
+public class MainController {
 
     String startBusStop;
     String stopBusStop;
@@ -24,11 +26,11 @@ public class SimpleController {
     String appName;
 
     @GetMapping("/")
-    public String homePage(Model model, @ModelAttribute("startBusStop") String startBusStop, @ModelAttribute("stopBusStop") String stopBusStop) {
+    public String index(Model model, @ModelAttribute("startBusStop") String startBusStop, @ModelAttribute("stopBusStop") String stopBusStop) {
         busStops = Arrays.asList("A", "B", "C", "D");
         model.addAttribute("busStops", busStops);
         model.addAttribute("appName", appName);
-        return "home";
+        return "index";
     }
 }
 
