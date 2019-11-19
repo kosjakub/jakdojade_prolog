@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head><title>Home Page</title></head>
+<body>
+<h1>Hello !</h1>
+<p>Welcome to <span th:text="${appName}">Our App</span></p>
+
+<div class="form-group blu-margin">
+    <select class="form-control" th:field="*{startBusStop}" id="startBusStopDropDown">
+        <option value="0">Select starting point</option>
+        <option th:each="busStop : ${busStops}" th:value="${busStop}" th:text="${busStop}"></option>
+    </select>
+</div>
+
+<div class="form-group blu-margin">
+    <select class="form-control" th:field="*{stopBusStop}" id="stopBusStopDropDown">
+        <option value="0">Select stop point</option>
+        <option th:each="busStop : ${busStops}" th:value="${busStop}" th:text="${busStop}"></option>
+    </select>
+</div>
+
+
+</body>
+</html>
