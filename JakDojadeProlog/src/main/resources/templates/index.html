@@ -19,19 +19,41 @@
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
         <h2> Jak dojadę - Prolog</h2>
-        <div class="form-group blu-margin">
-            <select class="form-control" th:field="*{startBusStop}" id="startBusStopDropDown">
-                <option value="0">Select starting point</option>
-                <option th:each="busStop : ${busStops}" th:value="${busStop}" th:text="${busStop}"></option>
-            </select>
-        </div>
+        <form action="#" th:action="@{'/route'}" th:method="POST" th:object="${search}">
+            <div class="form-group blu-margin" >
+                <select class="form-control" th:field="*{startBusStop}" id="startBusStopDropDown">
+                    <option value="0">Select starting point</option>
+                    <option th:each="busStop : ${busStops}" th:value="${busStop.name}" th:text="${busStop}"></option>
+                </select>
+            </div>
 
-        <div class="form-group blu-margin">
-            <select class="form-control" th:field="*{stopBusStop}" id="stopBusStopDropDown">
-                <option value="0">Select stop point</option>
-                <option th:each="busStop : ${busStops}" th:value="${busStop}" th:text="${busStop}"></option>
-            </select>
-        </div>
+            <div class="form-group blu-margin">
+                <select class="form-control" th:field="*{stopBusStop}" id="stopBusStopDropDown">
+                    <option value="0">Select stop point</option>
+                    <option th:each="busStop : ${busStops}" th:value="${busStop.name}" th:text="${busStop}"></option>
+                </select>
+            </div>
+            <button type="submit" id="submitButton">Search</button>
+        </form>
+
+
+        <table>
+            <thead>
+            <tr>
+                <th> Time </th>
+                <th> Route </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${results.empty}">
+                <td colspan="2"> No routes found!</td>
+            </tr>
+            <tr th:each="result : ${results}">
+                <td><span th:text="${result.time}"> Time </span></td>
+                <td><span th:text="${result.busStops}"> Bus stops </span></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div> <!-- /container -->
 <!-- Bootstrap core JavaScript
