@@ -49,12 +49,12 @@ public class BusStopService {
     public List<Result> getAllRoutes(String startBusStop, String endBusStop) {
         Variable Route = new Variable("Route");
         Variable Time = new Variable("Time");
+        Variable ListOfLines = new Variable("ListOfLines");
         Query q =
                 new Query(
                         "route",
-                        new Term[]{new Atom(startBusStop), new Atom(endBusStop), Route, Time}
+                        new Term[]{new Atom(startBusStop), new Atom(endBusStop), Route, Time, ListOfLines}
                 );
-
         Map<String, Term>[] solutions = q.allSolutions();
         List<Result> resultList = new LinkedList<>();
 
@@ -63,7 +63,12 @@ public class BusStopService {
                     Arrays.stream(solution.get("Route").toTermArray())
                             .filter(arg -> arg.atomType().equals("text"))
                             .map(Term::name)
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList()),
+                    Arrays.stream(solution.get("ListOfLines").toTermArray())
+                            .filter(arg -> arg.atomType().equals("text"))
+                            .map(Term::name)
+                            .collect(Collectors.toList())
+                    );
             resultList.add(result);
             System.out.println(result);
         }
