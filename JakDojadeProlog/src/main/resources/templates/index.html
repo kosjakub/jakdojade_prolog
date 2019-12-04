@@ -51,9 +51,16 @@
             <tr th:each="result : ${results}">
                 <td><span th:text="${result.time}"> Time </span></td>
                 <td><span th:text="${result.busStops}"> Bus stops </span></td>
+                <td><span th:text="${result.listOfLines}"> List of lines </span></td>
             </tr>
             </tbody>
         </table>
+
+        <div th:if="${isMore}">
+            <form action="#" th:action="@{'/more'}" th:method="GET">
+                <button type="submit" id="submitButton2">Show more</button>
+            </form>
+        </div>
     </div>
 </div> <!-- /container -->
 <!-- Bootstrap core JavaScript

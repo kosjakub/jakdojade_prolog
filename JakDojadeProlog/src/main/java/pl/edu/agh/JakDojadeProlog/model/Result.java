@@ -12,6 +12,7 @@ import java.util.List;
 public class Result implements Comparable<Result>{
     private String time;
     private List<String> busStops;
+    private List<String> listOfLines;
 
     @Override
     public int compareTo(Result r) {

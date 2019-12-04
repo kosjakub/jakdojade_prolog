@@ -22,28 +22,64 @@ import java.util.List;
 @Controller
 public class MainController {
 
+    private List<Result> allResults = Collections.emptyList();
     private List<Result> results = Collections.emptyList();
     private List<BusStop> busStops;
+    private int showOptions = 5;
+    private boolean isMore = false;
+    private Search search;
+
+    private BusStopService busStopService;
 
     @Autowired
-    private BusStopService busStopService;
+    public MainController(BusStopService busStopService) {
+        this.busStopService = busStopService;
+        this.busStops = busStopService.getAllBusStops();
+    }
 
     @GetMapping("/")
     public String index(Model model, @ModelAttribute("startBusStop") BusStop startBusStop, @ModelAttribute("stopBusStop") BusStop stopBusStop) {
-        this.busStops = busStopService.getAllBusStops();
         model.addAttribute("search", new Search());
         model.addAttribute("busStops", busStops);
         model.addAttribute("results", results);
+        model.addAttribute("isMore", isMore);
         return "index";
     }
 
     @PostMapping("/route")
     public String route(Model model, @ModelAttribute("search") Search search) {
-        this.results = busStopService.getAllRoutes(search.getStartBusStop(), search.getStopBusStop());
-        this.results.sort(Result::compareTo);
+        this.search = search;
+        this.showOptions = 5;
+        this.allResults = busStopService.getAllRoutes(search.getStartBusStop(), search.getStopBusStop());
+        this.allResults.sort(Result::compareTo);
+        this.results = allResults.subList(0,getIndex(false));
         model.addAttribute("busStops", busStops);
         model.addAttribute("results", results);
+        model.addAttribute("isMore", isMore);
+        model.addAttribute("search", search);
         return "index";
+    }
+
+    @GetMapping("/more")
+    public String more(Model model) {
+        this.results = allResults.subList(0,getIndex(true));
+        model.addAttribute("busStops", busStops);
+        model.addAttribute("results", results);
+        model.addAttribute("isMore", isMore);
+        model.addAttribute("search", search);
+        return "index";
+    }
+
+    private int getIndex(boolean more){
+        if(more)
+            showOptions += 5;
+        if(showOptions < allResults.size()){
+            isMore = true;
+            return showOptions;
+        } else {
+            isMore = false;
+            return allResults.size();
+        }
     }
 }
 
